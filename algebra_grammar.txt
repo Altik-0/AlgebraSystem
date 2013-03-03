@@ -1,0 +1,31 @@
+//------------
+// Number defs
+//------------
+
+<int> : 		"-"?0   |
+				"-"?[1-9][0-9]*
+<pt_float> :	<int>?"."[0-9]+
+<float_exp> :	("e" | "E") ("+" | "-")? [0-9]+
+<float> :		<pt_float> |
+				(<int> | <pt_float>) <float_exp>
+
+<num> : <int> | <float>
+
+//----------			
+// Poly defs
+//----------
+
+<exp> : "^" <num>
+<var> :	[A-Za-z]<exp>?
+<pls_mns> : "+" | "-"
+<oper> : <pls_mns> | "*" | "/"
+
+<poly_term> : <num>?<var>*
+<poly> : <poly_term>(<pls_mns><poly_term>)*
+
+//------------------------
+// Complex expression defs
+//------------------------
+
+<complex_expr> : <poly> |
+				 "("<complex_expr>")"<exp>?<oper>?<complex_expr>
